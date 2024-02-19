@@ -41,7 +41,7 @@ export async function generateMetadata(
       "fc:frame:image": `${process.env["HOST"]}/${encodeURIComponent(
         text
       )}/opengraph-image`,
-      "fc:frame:input:text": "What are your gardening questions?",
+      "fc:frame:input:text": "Insert a gardening question",
       "fc:frame:button:1": "Ask",
     };
 
