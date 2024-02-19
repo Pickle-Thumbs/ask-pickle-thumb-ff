@@ -34,7 +34,9 @@ export default async function Image({ params }: { params: { text: string } }) {
           textAlign: "center",
         }}
       >
-        {reply.message[0].paragraph}
+        {reply?.message?.[0]?.paragraph ||
+          reply?.responses?.[0]?.para1 ||
+          "Failed to generate opengraph image"}
       </div>
     ),
     // ImageResponse options
