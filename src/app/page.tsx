@@ -38,7 +38,9 @@ export async function generateMetadata(
       "fc:frame:post_url": `${process.env["HOST"]}?prompt=${encodeURIComponent(
         searchParams.prompt
       )}`,
-      "fc:frame:image": `${process.env["HOST"]}/${encodeURIComponent(text)}`,
+      "fc:frame:image": `${process.env["HOST"]}/${encodeURIComponent(
+        text
+      )}/opengraph-image`,
       "fc:frame:input:text": "What are your gardening questions?",
       "fc:frame:button:1": "Ask",
     };
@@ -47,7 +49,9 @@ export async function generateMetadata(
       title: searchParams.prompt,
       openGraph: {
         title: searchParams.prompt,
-        images: [`/${encodeURIComponent(JSON.stringify(text))}`],
+        images: [
+          `/${encodeURIComponent(JSON.stringify(text))}/opengraph-image`,
+        ],
       },
       other: {
         ...fcMetadata,

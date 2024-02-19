@@ -36,6 +36,7 @@ export default async function Image({ params }: { params: { text: string } }) {
       >
         {reply?.message?.[0]?.paragraph ||
           reply?.responses?.[0]?.para1 ||
+          reply?.answer?.[0] ||
           "Failed to generate opengraph image"}
       </div>
     ),
