@@ -34,7 +34,7 @@ export default async function Image({ params }: { params: { text: string } }) {
           textAlign: "center",
         }}
       >
-        {reply?.message?.[0] || "Failed to provide an answer"}
+        {reply?.reply?.message?.[0] || "Failed to provide an answer"}
       </div>
     ),
     // ImageResponse options
