@@ -5,6 +5,25 @@ import { Metadata, ResolvingMetadata } from "next";
 
 export const runtime = "edge";
 
+const PROMPT_TEMPLATE = (
+  prompt: string
+) => `I want you to answer this gardening question. You are a helpful master gardener that provides advice for home gardeners. Your advice should be limited to five paragraphs.
+Your response can be fewer paragraphs. Each paragraph should be no more than 144 characters. Please reply in JSON format and put the total paragraphs in the results in the following formats
+
+{
+  reply: {
+    message: [
+      '',
+      '',
+      '',
+      '',
+      '',
+    ]
+  }
+}
+
+Here is the question: ${prompt}`;
+
 type Props = {
   searchParams: { [key: string]: string };
 };
@@ -16,15 +35,38 @@ const openai = new OpenAI({
 export async function generateMetadata(
   { searchParams }: Props,
   parent: ResolvingMetadata
-): Promise<Metadata | null> {
+): Promise<Metadata> {
+  const prompt = searchParams?.prompt;
+
+  const DEFAULT_METADATA = {
+    title: searchParams.prompt,
+    openGraph: {
+      title: searchParams.prompt,
+      images: [`/og.png`],
+    },
+    other: {
+      "fc:frame": "vNext",
+      "fc:frame:post_url": `${process.env["HOST"]}?prompt=${encodeURIComponent(
+        searchParams.prompt
+      )}`,
+      "fc:frame:image": `${process.env["HOST"]}/og.png`,
+      "fc:frame:input:text": "Insert a gardening question",
+      "fc:frame:button:1": "Ask",
+    },
+    metadataBase: new URL(process.env["HOST"] || ""),
+  };
+
+  if (!prompt) {
+    return DEFAULT_METADATA;
+  }
+
   // Removed the stream: true, to not use streaming API
   const response = await openai.chat.completions.create({
     model: "gpt-4",
     messages: [
       {
         role: "user",
-        content:
-          searchParams["prompt"] ?? "Give me code for generating a JSX button",
+        content: PROMPT_TEMPLATE(prompt),
       },
     ],
   });
@@ -60,7 +102,7 @@ export async function generateMetadata(
     };
   }
 
-  return null;
+  return DEFAULT_METADATA;
 }
 
 export default async function Page({
@@ -69,6 +111,12 @@ export default async function Page({
   // note that using searchParams opts your page into dynamic rendering. See https://nextjs.org/docs/app/api-reference/file-conventions/page#searchparams-optional
   searchParams: Record<string, string>;
 }) {
+  const prompt = searchParams?.prompt;
+
+  if (!prompt) {
+    return <div>Welcome</div>;
+  }
+
   // Request the OpenAI API for the response based on the prompt
   const response = await openai.chat.completions.create({
     model: "gpt-4",
@@ -76,8 +124,7 @@ export default async function Page({
     messages: [
       {
         role: "user",
-        content:
-          searchParams["prompt"] ?? "Give me code for generating a JSX button",
+        content: PROMPT_TEMPLATE(prompt),
       },
     ],
   });
