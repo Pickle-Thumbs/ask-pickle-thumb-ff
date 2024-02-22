@@ -50,7 +50,7 @@ export async function generateMetadata(
         searchParams.prompt
       )}`,
       "fc:frame:image": `${process.env["HOST"]}/og.png`,
-      "fc:frame:input:text": "Insert a gardening question",
+      "fc:frame:input:text": "Ask your gardening question",
       "fc:frame:button:1": "Ask",
     },
     metadataBase: new URL(process.env["HOST"] || ""),
@@ -83,7 +83,7 @@ export async function generateMetadata(
       "fc:frame:image": `${process.env["HOST"]}/${encodeURIComponent(
         text
       )}/opengraph-image`,
-      "fc:frame:input:text": "Insert a gardening question",
+      "fc:frame:input:text": "Ask your gardening question",
       "fc:frame:button:1": "Ask",
     };
 
@@ -114,7 +114,7 @@ export default async function Page({
   const prompt = searchParams?.prompt;
 
   if (!prompt) {
-    return <div>Welcome</div>;
+    return <div>Hi</div>;
   }
 
   // Request the OpenAI API for the response based on the prompt

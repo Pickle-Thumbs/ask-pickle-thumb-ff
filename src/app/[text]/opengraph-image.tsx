@@ -4,7 +4,7 @@ import { ImageResponse } from "next/og";
 export const runtime = "edge";
 
 // Image metadata
-export const alt = "About Acme";
+export const alt = "Ask the Pickle Thumb";
 export const size = {
   width: 1200,
   height: 630,
@@ -25,7 +25,7 @@ export default async function Image({ params }: { params: { text: string } }) {
       <div
         style={{
           fontSize: 24,
-          background: "white",
+          background: "#08A24B",
           width: "100%",
           height: "100%",
           display: "flex",
